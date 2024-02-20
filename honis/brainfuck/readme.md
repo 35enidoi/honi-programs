@@ -1,7 +1,7 @@
 # これなに
 brainfuckのインタプリンタです  
 # どうやって使うの
-```
+```py
 from brain import brain
 
 code = """

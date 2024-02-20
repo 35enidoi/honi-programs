@@ -1,7 +1,7 @@
 # これなに
 入力された文字を出力するbrainfuckのプログラム生成器です。
 # どうやって使うの
-```
+```py
 from brain_input import asciibrain, hiraganabrain
 
 # 実行するとコードが返される。
