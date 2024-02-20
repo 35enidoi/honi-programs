@@ -1,7 +1,7 @@
 # これなに
 `hq9+`のインタプリンタです。  
 # どうやって使うの
-```
+```py
 from hqnineplus import hqnineplus
 
 hqnineplus("HQ9+++++++++++QHQ")
