@@ -17,9 +17,23 @@ def brain(code:str,debug=False,ret16=False,log=False,stepmode=False,steptime=0,s
     point = [0]
     nowpoint = 0
     n = 0
-    stack = []
     bit = (2**sizebit)-1
     step = 0
+
+    def bracket_searcher(bracketslike:list[tuple[str, int]], n_:int) -> int:
+        "bracketの探索する奴"
+        nowchar = coded[n_]
+        index = bracketslike.index((nowchar, n_))
+        balance = 1
+
+        while balance != 0:
+            index += 1
+            if bracketslike[index][0] == nowchar:
+                balance += 1
+            else:
+                balance -= 1
+
+        return bracketslike[index][1]
 
     brackets = [(i, v) for v, i in enumerate(coded) if i == "[" or i == "]"]
 
@@ -45,25 +59,16 @@ def brain(code:str,debug=False,ret16=False,log=False,stepmode=False,steptime=0,s
         output = ""
     if log:
         logs = ""
+
     try:
         while n < len(coded):
             i = coded[n]
             if i == "]":
                 if point[nowpoint] != 0:
-                    n = stack[-1]
-                else:
-                    stack.pop()
+                    n = bracket_searcher(list(reversed(brackets)), n)
             elif i == "[":
                 if point[nowpoint] == 0:
-                    balance = 1
-                    while balance != 0:
-                        n += 1
-                        if coded[n] == "[":
-                            balance += 1
-                        elif coded[n] == "]":
-                            balance -= 1
-                else:
-                    stack.append(n)
+                    n = bracket_searcher(brackets, n)
             elif i == ">":
                 nowpoint += 1
                 try:
@@ -109,9 +114,3 @@ def brain(code:str,debug=False,ret16=False,log=False,stepmode=False,steptime=0,s
                 print(point)
             if log:
                 print(logs)
-
-code = """
-++++[>+++++[>+++<-]<-]>+++++[>>+>++>+++>++++>+++++>++++++[<]>-]>[>[+>]<-[<]>-]>>>.++++.---->>.++++.----<<<<.>>>++++..----<<<++++.---->>>++++.---->.<<.<<.>+++.--->++.--<<.>>>+++.--->.<<
-"""
-
-brain(code)
