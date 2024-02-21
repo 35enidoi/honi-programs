@@ -12,7 +12,14 @@ class CloseBracketError(BrainException):
 class PointError(BrainException):
     pass
 
-def brain(code:str,debug=False,ret16=False,log=False,stepmode=False,steptime=0,sizebit=8):
+def brain(code:str,
+          debug:bool=False,
+          ret16:bool=False,
+          log:bool=False,
+          stepmode:bool=False,
+          steptime:int=0,
+          sizebit:int=8):
+
     coded = tuple(code.strip())
     point = [0]
     nowpoint = 0
