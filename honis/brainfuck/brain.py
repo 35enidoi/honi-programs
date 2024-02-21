@@ -13,13 +13,31 @@ class PointError(BrainException):
     pass
 
 def brain(code:str,debug=False,ret16=False,log=False,stepmode=False,steptime=0,sizebit=8):
-    coded = list(code.strip())
+    coded = tuple(code.strip())
     point = [0]
     nowpoint = 0
     n = 0
     stack = []
     bit = (2**sizebit)-1
     step = 0
+
+    brackets = [(i, v) for v, i in enumerate(coded) if i == "[" or i == "]"]
+
+    # 角括弧の例外をすべてここでキャッチする
+    if (brlist := tuple(map(lambda x:str(x[0]), brackets))).count("[") != brlist.count("]"):
+        if brlist.count("[")-brlist.count("]") > 0:
+            # `]`の量が多い
+            raise CloseBracketError("too many ]")
+        else:
+            # `[`の量が多い
+            raise OpenBracketError("too many [")
+    elif brlist[0] == "]":
+        # 初めに閉じるブラケットのある無効なプログラムである
+        raise CloseBracketError("Invalid program")
+    elif brlist[-1] == "[":
+        # 最後に開くブラケットのある無効なプログラム
+        raise OpenBracketError("Invalid program")
+
     if stepmode or debug:
         print("\n"+code.strip()+"\n")
     if stepmode:
@@ -34,22 +52,16 @@ def brain(code:str,debug=False,ret16=False,log=False,stepmode=False,steptime=0,s
                 if point[nowpoint] != 0:
                     n = stack[-1]
                 else:
-                    try:
-                        stack.pop()
-                    except IndexError:
-                        raise CloseBracketError("not detect [")
+                    stack.pop()
             elif i == "[":
                 if point[nowpoint] == 0:
                     balance = 1
-                    try:
-                        while balance != 0:
-                            n += 1
-                            if coded[n] == "[":
-                                balance += 1
-                            elif coded[n] == "]":
-                                balance -= 1
-                    except IndexError:
-                        raise OpenBracketError("not detect ]")
+                    while balance != 0:
+                        n += 1
+                        if coded[n] == "[":
+                            balance += 1
+                        elif coded[n] == "]":
+                            balance -= 1
                 else:
                     stack.append(n)
             elif i == ">":
@@ -97,3 +109,9 @@ def brain(code:str,debug=False,ret16=False,log=False,stepmode=False,steptime=0,s
                 print(point)
             if log:
                 print(logs)
+
+code = """
+++++[>+++++[>+++<-]<-]>+++++[>>+>++>+++>++++>+++++>++++++[<]>-]>[>[+>]<-[<]>-]>>>.++++.---->>.++++.----<<<<.>>>++++..----<<<++++.---->>>++++.---->.<<.<<.>+++.--->++.--<<.>>>+++.--->.<<
+"""
+
+brain(code)
