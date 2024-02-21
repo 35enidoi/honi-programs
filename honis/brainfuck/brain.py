@@ -45,19 +45,22 @@ def brain(code:str,
     brackets = [(i, v) for v, i in enumerate(coded) if i == "[" or i == "]"]
 
     # 角括弧の例外をすべてここでキャッチする
-    if (brlist := tuple(map(lambda x:str(x[0]), brackets))).count("[") != brlist.count("]"):
-        if brlist.count("[")-brlist.count("]") > 0:
-            # `]`の量が多い
-            raise CloseBracketError("too many ]")
-        else:
-            # `[`の量が多い
-            raise OpenBracketError("too many [")
-    elif brlist[0] == "]":
-        # 初めに閉じるブラケットのある無効なプログラムである
-        raise CloseBracketError("Invalid program")
-    elif brlist[-1] == "[":
-        # 最後に開くブラケットのある無効なプログラム
-        raise OpenBracketError("Invalid program")
+    if len(brackets) != 0:
+        # まずブラケットがあるコードなのか(index out of range対策)
+        if (brlist := tuple(map(lambda x:str(x[0]), brackets))).count("[") != brlist.count("]"):
+            # `[`と`]`の量が違う
+            if brlist.count("[")-brlist.count("]") > 0:
+                # `]`の量が多い
+                raise CloseBracketError("too many ]")
+            else:
+                # `[`の量が多い
+                raise OpenBracketError("too many [")
+        elif brlist[0] == "]":
+            # 初めに閉じるブラケットのある無効なプログラムである
+            raise CloseBracketError("Invalid program")
+        elif brlist[-1] == "[":
+            # 最後に開くブラケットのある無効なプログラム
+            raise OpenBracketError("Invalid program")
 
     if stepmode or debug:
         print("\n"+code.strip()+"\n")
