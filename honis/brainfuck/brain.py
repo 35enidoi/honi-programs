@@ -18,10 +18,16 @@ def brain(code:str,
           log:bool=False,
           stepmode:bool=False,
           steptime:int=0,
-          sizebit:int=8):
+          sizebit:int=8,
+          sizemem:int=0,
+          tooinc:bool=False,
+          toodec:bool=False):
 
     coded = tuple(code.strip())
-    point = [0]
+    if sizemem > 0:
+        point = [0 for _ in range(sizemem)]
+    else:
+        point = [0]
     nowpoint = 0
     n = 0
     bit = (2**sizebit)-1
@@ -81,14 +87,21 @@ def brain(code:str,
                     n = bracket_searcher(brackets, n)
             elif i == ">":
                 nowpoint += 1
-                try:
-                    point[nowpoint]
-                except IndexError:
-                    point.append(0)
+                if len(point) == nowpoint:
+                    if sizemem > 0:
+                        if tooinc:
+                            nowpoint = 0
+                        else:
+                            raise PointError("Pointer too increment")
+                    else:
+                        point.append(0)
             elif i == "<":
                 nowpoint -= 1
                 if nowpoint == -1:
-                    raise PointError("Pointer too decrement")
+                    if toodec:
+                        nowpoint = len(point)-1
+                    else:
+                        raise PointError("Pointer too decrement")
             elif i == "+":
                 if point[nowpoint] == bit:
                     point[nowpoint] = 0
