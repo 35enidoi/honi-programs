@@ -1,4 +1,5 @@
 import time
+from shutil import get_terminal_size
 
 class BrainException(Exception):
     pass
@@ -142,13 +143,24 @@ def brain(code:str,
             if log:
                 logs += i
             if stepmode:
-                print(f"\rcodeat;{n} codein;{i} step;{step} nowpoint;{nowpoint} point;{point} output;[{output}]",end="")
+                passage = f"codeat;{n} codein;{i} step;{step} nowpoint;{nowpoint} point;{point} output;[{output}]\r"
+                upnum = passage.count("\n")+len(passage)//get_terminal_size().columns
+                print(passage+("\033[1A"*upnum),end="")
                 time.sleep(steptime)
     except BrainException:
         raise
     finally:
+        if stepmode:
+            # ターミナルで文字の入力の場所が変になってるので直す
+            passage = f"codeat;{n} codein;{i} step;{step} nowpoint;{nowpoint} point;{point} output;[{output}]\r"
+            downnum = passage.count("\n")+len(passage)//get_terminal_size().columns
+            print("\n"*downnum)
         if debug:
-            print("\n\n"+str(nowpoint))
+            if stepmode:
+                # stepmode時は変になるので改行一個なくす
+                print("\n"+str(nowpoint))
+            else:
+                print("\n\n"+str(nowpoint))
             if ret16:
                 print(list(map(lambda x: format(x,"02x"), point)))
             else:
