@@ -20,6 +20,7 @@ def brain(code:str,*,
           # ここはインタプリンタの設定関連
           speinp:str=None,
           retmode:bool=False,
+          yiemode:bool=False,
           # ここはbrainfuckの設定関係
           sizebit:int=8,
           sizemem:int=0,
@@ -37,12 +38,19 @@ def brain(code:str,*,
         point = [0 for _ in range(sizemem)]
     else:
         point = [0]
+    if stepmode:
+        oulist = []
+        output = ""
+    if log:
+        logs = ""
     if speinp is not None:
         specialinputs = list(speinp)
+    if retmode and yiemode:
+        raise BrainException("retmode and yiemode can not use with.")
     if retmode:
         returns = []
-        stepmode = False
-        debug = False
+    if yiemode:
+        yieldlist = []
     nowpoint = 0
     n = 0
     bit = (2**sizebit)-1
@@ -98,13 +106,8 @@ def brain(code:str,*,
     # ]に対応する[の辞書
     rbracketpos = {v:i for i, v in bracketpos.items()}
 
-    if stepmode or debug:
+    if (stepmode or debug) and (not yiemode) and (not retmode):
         print("\n"+code.strip()+"\n")
-    if stepmode:
-        oulist = []
-        output = ""
-    if log:
-        logs = ""
 
     try:
         while n < len(coded):
@@ -148,6 +151,8 @@ def brain(code:str,*,
                 elif stepmode:
                     oulist.append(returnchar)
                     output = "".join(oulist)
+                elif yiemode:
+                    yieldlist.append({"output":returnchar})
                 else:
                     print(returnchar,end="")
             elif i == ",":
@@ -167,6 +172,11 @@ def brain(code:str,*,
             if log:
                 logs += i
             if stepmode:
+                if yiemode:
+                    yieldlist.append({"codeat":n, "codein":i, "step":step, "nowpoint":nowpoint, "point":point, "output":output})
+                    continue
+                elif retmode:
+                    continue
                 passage = f"codeat;{n} codein;{i} step;{step} nowpoint;{nowpoint} point;{point} output;[{output}]\r"
                 upnum = passage.count("\n")+len(passage)//get_terminal_size().columns
                 print(passage+("\033[1A"*upnum),end="")
@@ -176,6 +186,11 @@ def brain(code:str,*,
     finally:
         if retmode:
             return "".join(returns)
+        if yiemode:
+            return yieldlist
+        if n == 0:
+            # なんもない、while分の中身実行してないので危ない。
+            return
         if stepmode:
             # ターミナルで文字の入力の場所が変になってるので直す
             passage = f"codeat;{n} codein;{i} step;{step} nowpoint;{nowpoint} point;{point} output;[{output}]\r"

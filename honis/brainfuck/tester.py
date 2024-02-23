@@ -50,3 +50,14 @@ for i in brain(code, yiemode=True):
 print()
 brain(",.,.", speinp="aiueo")
 # ai
+print()
+for i in brain(code, yiemode=True, debug=True):
+    print(i["output"],end="")
+# KOUYATTETUKAIMASU
+print()
+for i in brain(code, yiemode=True, stepmode=True):
+    print(str(i["codeat"])+"\r", end="")
+# 184
+print()
+print(len(brain(code, yiemode=True, stepmode=True, debug=True)))
+# 2940
