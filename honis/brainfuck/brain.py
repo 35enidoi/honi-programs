@@ -16,16 +16,18 @@ class OpenBracketError(BracketError):
 class CloseBracketError(BracketError):
     pass
 
-def brain(code:str,
+def brain(code:str,*,
+          # ここはbrainfuckの設定関係
+          sizebit:int=8,
+          sizemem:int=0,
+          tooinc:bool=False,
+          toodec:bool=False,
+          # ここから下はdebag関係
           debug:bool=False,
           ret16:bool=False,
           log:bool=False,
           stepmode:bool=False,
-          steptime:int=0,
-          sizebit:int=8,
-          sizemem:int=0,
-          tooinc:bool=False,
-          toodec:bool=False):
+          steptime:int=0):
 
     coded = tuple(code.strip())
     if sizemem > 0:
