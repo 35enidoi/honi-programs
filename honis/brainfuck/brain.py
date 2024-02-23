@@ -17,6 +17,8 @@ class CloseBracketError(BracketError):
     pass
 
 def brain(code:str,*,
+          # ここはインタプリンタの設定関連
+          speinp:str=None,
           # ここはbrainfuckの設定関係
           sizebit:int=8,
           sizemem:int=0,
@@ -34,6 +36,8 @@ def brain(code:str,*,
         point = [0 for _ in range(sizemem)]
     else:
         point = [0]
+    if speinp is not None:
+        specialinputs = list(speinp)
     nowpoint = 0
     n = 0
     bit = (2**sizebit)-1
@@ -139,6 +143,15 @@ def brain(code:str,*,
                 else:
                     print(chr(point[nowpoint]),end="")
             elif i == ",":
+                if speinp is not None:
+                    if len(specialinputs) == 0:
+                        # ASCIIでのEOFは調べた限り多分26
+                        point[nowpoint] = 26
+                        # 二回目に参照されたらエラー吐くようにする
+                        specialinputs = None
+                    elif specialinputs is None:
+                        raise BrainException("too get inputs.")
+                    point[nowpoint] = specialinputs.pop(0)
                 point[nowpoint] = ord(list(input())[0])
             n += 1
             step += 1
