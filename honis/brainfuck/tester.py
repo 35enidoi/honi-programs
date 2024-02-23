@@ -52,3 +52,5 @@ except PointError as e:
     print(e)
     # 出力
     # Pointer too decrement
+for i in brain(code, yiemode=True):
+    print(i["output"], end="")

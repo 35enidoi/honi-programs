@@ -160,7 +160,8 @@ def brain(code:str,*,
                     elif specialinputs is None:
                         raise BrainException("too get inputs.")
                     point[nowpoint] = specialinputs.pop(0)
-                point[nowpoint] = ord(list(input())[0])
+                else:
+                    point[nowpoint] = ord(list(input())[0])
             n += 1
             step += 1
             if log:
