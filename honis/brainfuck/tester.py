@@ -54,3 +54,9 @@ except PointError as e:
     # Pointer too decrement
 for i in brain(code, yiemode=True):
     print(i["output"], end="")
+# 出力
+# KOUYATTETUKAIMASU
+print()
+brain(",.,.", speinp="aiueo")
+# 出力
+# ai
