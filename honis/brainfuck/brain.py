@@ -51,10 +51,7 @@ def brain(code:str,
     def static_bracket_analysis(bracketslike:list[tuple[str, int]], openb:str, closeb:str) -> None:
         if len(bracketslike) != 0:
             # まずブラケットがあるコードなのか(index out of range対策)
-            if (openb_c := (brlist := tuple(map(lambda x:str(x[0]), bracketslike))).count(openb))+(closeb_c := brlist.count(closeb)) != len(brlist):
-                # bracketslikeに異物混入していた場合
-                raise ValueError("static analysis fail:bracketlike include other object")
-            if openb_c != closeb_c:
+            if (openb_c := (brlist := tuple(map(lambda x:str(x[0]), bracketslike))).count(openb)) != (closeb_c := brlist.count(closeb)):
                 # openbとclosebの量が違う
                 if openb_c-closeb_c > 0:
                     # closebの量が多い
