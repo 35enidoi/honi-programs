@@ -77,8 +77,14 @@ def brain(code:str,
                             # openbとclosebが向かい合っていないため、実行できない
                             raise BracketError(f"brackets `{openb}` and `{closeb}` do not match.")
 
+    # 角括弧のリスト
     brackets = [(i, v) for v, i in enumerate(coded) if i == "[" or i == "]"]
-    static_bracket_analysis(brackets)
+    # 角括弧の静的解析
+    static_bracket_analysis(brackets, "[", "]")
+    # [に対応する]の辞書
+    bracketpos = {v: bracket_searcher(brackets, v) for v in (i[1] for i in brackets if i[0] == "[")}
+    # ]に対応する[の辞書
+    rbracketpos = {v:i for i, v in bracketpos.items()}
 
     if stepmode or debug:
         print("\n"+code.strip()+"\n")
@@ -93,10 +99,10 @@ def brain(code:str,
             i = coded[n]
             if i == "]":
                 if point[nowpoint] != 0:
-                    n = bracket_searcher(list(reversed(brackets)), n)
+                    n = rbracketpos[n]
             elif i == "[":
                 if point[nowpoint] == 0:
-                    n = bracket_searcher(brackets, n)
+                    n = rbracketpos[n]
             elif i == ">":
                 nowpoint += 1
                 if len(point) == nowpoint:
