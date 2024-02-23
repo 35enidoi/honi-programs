@@ -114,7 +114,7 @@ def brain(code:str,*,
                     n = rbracketpos[n]
             elif i == "[":
                 if point[nowpoint] == 0:
-                    n = rbracketpos[n]
+                    n = bracketpos[n]
             elif i == ">":
                 nowpoint += 1
                 if len(point) == nowpoint:
