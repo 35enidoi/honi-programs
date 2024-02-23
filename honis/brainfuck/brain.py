@@ -19,6 +19,7 @@ class CloseBracketError(BracketError):
 def brain(code:str,*,
           # ここはインタプリンタの設定関連
           speinp:str=None,
+          retmode:bool=False,
           # ここはbrainfuckの設定関係
           sizebit:int=8,
           sizemem:int=0,
@@ -38,6 +39,10 @@ def brain(code:str,*,
         point = [0]
     if speinp is not None:
         specialinputs = list(speinp)
+    if retmode:
+        returns = []
+        stepmode = False
+        debug = False
     nowpoint = 0
     n = 0
     bit = (2**sizebit)-1
@@ -137,11 +142,14 @@ def brain(code:str,*,
                 if point[nowpoint] == -1:
                     point[nowpoint] = bit
             elif i == ".":
-                if stepmode:
-                    oulist.append(chr(point[nowpoint]))
+                returnchar = chr(point[nowpoint])
+                if retmode:
+                    returns.append(returnchar)
+                elif stepmode:
+                    oulist.append(returnchar)
                     output = "".join(oulist)
                 else:
-                    print(chr(point[nowpoint]),end="")
+                    print(returnchar,end="")
             elif i == ",":
                 if speinp is not None:
                     if len(specialinputs) == 0:
@@ -165,6 +173,8 @@ def brain(code:str,*,
     except BrainException:
         raise
     finally:
+        if retmode:
+            return "".join(returns)
         if stepmode:
             # ターミナルで文字の入力の場所が変になってるので直す
             passage = f"codeat;{n} codein;{i} step;{step} nowpoint;{nowpoint} point;{point} output;[{output}]\r"
