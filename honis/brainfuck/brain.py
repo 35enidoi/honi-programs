@@ -3,13 +3,16 @@ import time
 class BrainException(Exception):
     pass
 
-class OpenBracketError(BrainException):
-    pass
-
-class CloseBracketError(BrainException):
-    pass
-
 class PointError(BrainException):
+    pass
+
+class BracketError(BrainException):
+    pass
+
+class OpenBracketError(BracketError):
+    pass
+
+class CloseBracketError(BracketError):
     pass
 
 def brain(code:str,
@@ -55,16 +58,24 @@ def brain(code:str,
                 # openbとclosebの量が違う
                 if openb_c-closeb_c > 0:
                     # closebの量が多い
-                    raise CloseBracketError(f"too many {closeb}")
+                    raise CloseBracketError(f"too many `{closeb}`.")
                 else:
                     # openbの量が多い
-                    raise OpenBracketError(f"too many {closeb}")
+                    raise OpenBracketError(f"too many `{closeb}`.")
             elif brlist[0] == closeb:
                 # 初めに閉じるブラケットのある無効なプログラムである
-                raise CloseBracketError("Invalid program")
-            elif brlist[-1] == openb:
-                # 最後に開くブラケットのある無効なプログラム
-                raise OpenBracketError("Invalid program")
+                raise CloseBracketError(f"first character is `{closeb}`.")
+            else:
+                # []][[]みたいなブラケットが向かい合ってないコードを弾く部分
+                barance = 0
+                for i in brlist:
+                    if i == openb:
+                        barance += 1
+                    else:
+                        barance -= 1
+                        if barance < 0:
+                            # openbとclosebが向かい合っていないため、実行できない
+                            raise BracketError(f"brackets `{openb}` and `{closeb}` do not match.")
 
     brackets = [(i, v) for v, i in enumerate(coded) if i == "[" or i == "]"]
     static_bracket_analysis(brackets)
