@@ -9,22 +9,18 @@ long_onlyover16bit_code = """
 """
 
 brain(code)
-# 出力:
 # KOUYATTETUKAIMASU
 
 print()
 
 print(len(brain(code, retmode=True)))
-# 出力:
 # 17
 brain(code, stepmode=True)
-# 出力:
 #
 # ++++[>+++++[>+++<-]<-]>+++++[>>+>++>+++>++++>+++++>++++++[<]>-]>[>[+>]<-[<]>-]>>>.++++.---->>.++++.----<<<<.>>>++++..----<<<++++.---->>>++++.---->.<<.<<.>+++.--->++.--<<.>>>+++.--->.<<
 # 
 # codeat;184 codein;< step;2940 nowpoint;5 point;[0, 0, 0, 65, 70, 75, 80, 85, 30, 0] output;[KOUYATTETUKAIMASU]
 brain(code, debug=True)
-# 出力:
 #
 # ++++[>+++++[>+++<-]<-]>+++++[>>+>++>+++>++++>+++++>++++++[<]>-]>[>[+>]<-[<]>-]>>>.++++.---->>.++++.----<<<<.>>>++++..----<<<++++.---->>>++++.---->.<<.<<.>+++.--->++.--<<.>>>+++.--->.<<
 #
@@ -33,30 +29,24 @@ brain(code, debug=True)
 # 5
 # [0, 0, 0, 65, 70, 75, 80, 85, 30, 0]
 brain(long_onlyover16bit_code)
-# 出力:
 # UNDER 16 BIT DETECT
 print()
 brain(long_onlyover16bit_code, sizebit=16)
-# 出力:
 # ろっかくれんちですまる
 print()
 try:
     brain(long_onlyover16bit_code, sizemem=5)
 except PointError as e:
     print(e)
-    # 出力:
     # Pointer too increment
 try:
     brain("<")
 except PointError as e:
     print(e)
-    # 出力
     # Pointer too decrement
 for i in brain(code, yiemode=True):
     print(i["output"], end="")
-# 出力
 # KOUYATTETUKAIMASU
 print()
 brain(",.,.", speinp="aiueo")
-# 出力
 # ai
