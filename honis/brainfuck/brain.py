@@ -4,6 +4,9 @@ from shutil import get_terminal_size
 class BrainException(Exception):
     pass
 
+class SpeinpTooGetError(BrainException):
+    pass
+
 class PointError(BrainException):
     pass
 
@@ -163,7 +166,7 @@ def brain(code:str,*,
                         # 二回目に参照されたらエラー吐くようにする
                         specialinputs = None
                     elif specialinputs is None:
-                        raise BrainException("too get inputs.")
+                        raise SpeinpTooGetError("too get inputs.")
                     point[nowpoint] = ord(specialinputs.pop(0))
                 else:
                     point[nowpoint] = ord(list(input())[0])
