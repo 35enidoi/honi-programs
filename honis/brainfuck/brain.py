@@ -1,33 +1,58 @@
 import time
+from shutil import get_terminal_size
 
 class BrainException(Exception):
     pass
 
-class OpenBracketError(BrainException):
-    pass
-
-class CloseBracketError(BrainException):
+class SpeinpTooGetError(BrainException):
     pass
 
 class PointError(BrainException):
     pass
 
-def brain(code:str,
+class BracketError(BrainException):
+    pass
+
+class OpenBracketError(BracketError):
+    pass
+
+class CloseBracketError(BracketError):
+    pass
+
+def brain(code:str,*,
+          # ここはインタプリンタの設定関連
+          speinp:str=None,
+          retmode:bool=False,
+          yiemode:bool=False,
+          # ここはbrainfuckの設定関係
+          sizebit:int=8,
+          sizemem:int=0,
+          tooinc:bool=False,
+          toodec:bool=False,
+          # ここから下はdebag関係
           debug:bool=False,
           ret16:bool=False,
           log:bool=False,
           stepmode:bool=False,
-          steptime:int=0,
-          sizebit:int=8,
-          sizemem:int=0,
-          tooinc:bool=False,
-          toodec:bool=False):
+          steptime:int=0):
 
     coded = tuple(code.strip())
     if sizemem > 0:
         point = [0 for _ in range(sizemem)]
     else:
         point = [0]
+    if stepmode:
+        output = ""
+    if log:
+        logs = ""
+    if speinp is not None:
+        specialinputs = list(speinp)
+    if retmode and yiemode:
+        yiemode  = False
+    if retmode:
+        returns = ""
+    if yiemode:
+        yieldlist = []
     nowpoint = 0
     n = 0
     bit = (2**sizebit)-1
@@ -48,43 +73,53 @@ def brain(code:str,
 
         return bracketslike[index][1]
 
-    brackets = [(i, v) for v, i in enumerate(coded) if i == "[" or i == "]"]
-
-    # 角括弧の例外をすべてここでキャッチする
-    if len(brackets) != 0:
-        # まずブラケットがあるコードなのか(index out of range対策)
-        if (brlist := tuple(map(lambda x:str(x[0]), brackets))).count("[") != brlist.count("]"):
-            # `[`と`]`の量が違う
-            if brlist.count("[")-brlist.count("]") > 0:
-                # `]`の量が多い
-                raise CloseBracketError("too many ]")
+    def static_bracket_analysis(bracketslike:list[tuple[str, int]], openb:str, closeb:str) -> None:
+        if len(bracketslike) != 0:
+            # まずブラケットがあるコードなのか(index out of range対策)
+            if (openb_c := (brlist := tuple(map(lambda x:str(x[0]), bracketslike))).count(openb)) != (closeb_c := brlist.count(closeb)):
+                # openbとclosebの量が違う
+                if openb_c-closeb_c > 0:
+                    # closebの量が多い
+                    raise CloseBracketError(f"too many `{closeb}`.")
+                else:
+                    # openbの量が多い
+                    raise OpenBracketError(f"too many `{closeb}`.")
+            elif brlist[0] == closeb:
+                # 初めに閉じるブラケットのある無効なプログラムである
+                raise CloseBracketError(f"first character is `{closeb}`.")
             else:
-                # `[`の量が多い
-                raise OpenBracketError("too many [")
-        elif brlist[0] == "]":
-            # 初めに閉じるブラケットのある無効なプログラムである
-            raise CloseBracketError("Invalid program")
-        elif brlist[-1] == "[":
-            # 最後に開くブラケットのある無効なプログラム
-            raise OpenBracketError("Invalid program")
+                # []][[]みたいなブラケットが向かい合ってないコードを弾く部分
+                barance = 0
+                for i in brlist:
+                    if i == openb:
+                        barance += 1
+                    else:
+                        barance -= 1
+                        if barance < 0:
+                            # openbとclosebが向かい合っていないため、実行できない
+                            raise BracketError(f"brackets `{openb}` and `{closeb}` do not match.")
 
-    if stepmode or debug:
+    # 角括弧のリスト
+    brackets = [(i, v) for v, i in enumerate(coded) if i == "[" or i == "]"]
+    # 角括弧の静的解析
+    static_bracket_analysis(brackets, "[", "]")
+    # [に対応する]の辞書
+    bracketpos = {v: bracket_searcher(brackets, v) for v in (i[1] for i in brackets if i[0] == "[")}
+    # ]に対応する[の辞書
+    rbracketpos = {v:i for i, v in bracketpos.items()}
+
+    if (stepmode or debug) and (not yiemode) and (not retmode):
         print("\n"+code.strip()+"\n")
-    if stepmode:
-        oulist = []
-        output = ""
-    if log:
-        logs = ""
 
     try:
         while n < len(coded):
             i = coded[n]
             if i == "]":
                 if point[nowpoint] != 0:
-                    n = bracket_searcher(list(reversed(brackets)), n)
+                    n = rbracketpos[n]
             elif i == "[":
                 if point[nowpoint] == 0:
-                    n = bracket_searcher(brackets, n)
+                    n = bracketpos[n]
             elif i == ">":
                 nowpoint += 1
                 if len(point) == nowpoint:
@@ -112,25 +147,62 @@ def brain(code:str,
                 if point[nowpoint] == -1:
                     point[nowpoint] = bit
             elif i == ".":
-                if stepmode:
-                    oulist.append(chr(point[nowpoint]))
-                    output = "".join(oulist)
+                returnchar = chr(point[nowpoint])
+                if retmode:
+                    returns += returnchar
+                elif stepmode:
+                    output += returnchar
+                elif yiemode:
+                    yieldlist.append({"output":returnchar})
                 else:
-                    print(chr(point[nowpoint]),end="")
+                    print(returnchar,end="")
             elif i == ",":
-                point[nowpoint] = ord(list(input())[0])
+                if speinp is not None:
+                    if len(specialinputs) == 0:
+                        # ASCIIでのEOFは調べた限り多分26
+                        point[nowpoint] = 26
+                        # 二回目に参照されたらエラー吐くようにする
+                        specialinputs = None
+                    elif specialinputs is None:
+                        raise SpeinpTooGetError("too get inputs.")
+                    point[nowpoint] = ord(specialinputs.pop(0))
+                else:
+                    point[nowpoint] = ord(list(input())[0])
             n += 1
             step += 1
             if log:
                 logs += i
             if stepmode:
-                print(f"\rcodeat;{n} codein;{i} step;{step} nowpoint;{nowpoint} point;{point} output;[{output}]",end="")
+                if yiemode:
+                    yieldlist.append({"codeat":n, "codein":i, "step":step, "nowpoint":nowpoint, "point":point, "output":output})
+                    continue
+                elif retmode:
+                    continue
+                passage = f"codeat;{n} codein;{i} step;{step} nowpoint;{nowpoint} point;{point} output;[{output}]\r"
+                upnum = passage.count("\n")+len(passage)//get_terminal_size().columns
+                print(passage+("\033[1A"*upnum),end="")
                 time.sleep(steptime)
     except BrainException:
         raise
     finally:
+        if retmode:
+            return returns
+        if yiemode:
+            return yieldlist
+        if n == 0:
+            # なんもない、while分の中身実行してないので危ない。
+            return
+        if stepmode:
+            # ターミナルで文字の入力の場所が変になってるので直す
+            passage = f"codeat;{n} codein;{i} step;{step} nowpoint;{nowpoint} point;{point} output;[{output}]\r"
+            downnum = passage.count("\n")+len(passage)//get_terminal_size().columns
+            print("\n"*downnum)
         if debug:
-            print("\n\n"+str(nowpoint))
+            if stepmode:
+                # stepmode時は変になるので改行一個なくす
+                print("\n"+str(nowpoint))
+            else:
+                print("\n\n"+str(nowpoint))
             if ret16:
                 print(list(map(lambda x: format(x,"02x"), point)))
             else:
