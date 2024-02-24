@@ -42,7 +42,6 @@ def brain(code:str,*,
     else:
         point = [0]
     if stepmode:
-        oulist = []
         output = ""
     if log:
         logs = ""
@@ -152,8 +151,7 @@ def brain(code:str,*,
                 if retmode:
                     returns.append(returnchar)
                 elif stepmode:
-                    oulist.append(returnchar)
-                    output = "".join(oulist)
+                    output += returnchar
                 elif yiemode:
                     yieldlist.append({"output":returnchar})
                 else:

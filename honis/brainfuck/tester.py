@@ -63,3 +63,13 @@ print(len(brain(code, yiemode=True, stepmode=True, debug=True)))
 # 2940
 print(brain(code, retmode=True, yiemode=True, debug=True, stepmode=True))
 # KOUYATTETUKAIMASU
+print(len(brain(long_onlyover16bit_code ,yiemode=True ,stepmode=True, steptime=1, sizebit=16)))
+# 215789
+brain(code, debug=True, stepmode=True)
+#
+# ++++[>+++++[>+++<-]<-]>+++++[>>+>++>+++>++++>+++++>++++++[<]>-]>[>[+>]<-[<]>-]>>>.++++.---->>.++++.----<<<<.>>>++++..----<<<++++.---->>>++++.---->.<<.<<.>+++.--->++.--<<.>>>+++.--->.<<
+#
+# codeat;184 codein;< step;2940 nowpoint;5 point;[0, 0, 0, 65, 70, 75, 80, 85, 30, 0] output;[KOUYATTETUKAIMASU]
+#
+# 5
+# [0, 0, 0, 65, 70, 75, 80, 85, 30, 0]
