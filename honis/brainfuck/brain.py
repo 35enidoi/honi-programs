@@ -50,7 +50,7 @@ def brain(code:str,*,
     if retmode and yiemode:
         yiemode  = False
     if retmode:
-        returns = []
+        returns = ""
     if yiemode:
         yieldlist = []
     nowpoint = 0
@@ -149,7 +149,7 @@ def brain(code:str,*,
             elif i == ".":
                 returnchar = chr(point[nowpoint])
                 if retmode:
-                    returns.append(returnchar)
+                    returns += returnchar
                 elif stepmode:
                     output += returnchar
                 elif yiemode:
@@ -186,7 +186,7 @@ def brain(code:str,*,
         raise
     finally:
         if retmode:
-            return "".join(returns)
+            return returns
         if yiemode:
             return yieldlist
         if n == 0:
