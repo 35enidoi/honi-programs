@@ -61,3 +61,5 @@ for i in brain(code, yiemode=True, stepmode=True):
 print()
 print(len(brain(code, yiemode=True, stepmode=True, debug=True)))
 # 2940
+print(brain(code, retmode=True, yiemode=True, debug=True, stepmode=True))
+# KOUYATTETUKAIMASU

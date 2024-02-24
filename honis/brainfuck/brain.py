@@ -49,7 +49,7 @@ def brain(code:str,*,
     if speinp is not None:
         specialinputs = list(speinp)
     if retmode and yiemode:
-        raise BrainException("retmode and yiemode can not use with.")
+        yiemode  = False
     if retmode:
         returns = []
     if yiemode:
