@@ -174,7 +174,7 @@ def brain(code:str,*,
                 logs += i
             if stepmode:
                 if yiemode:
-                    yieldlist.append({"codeat":n, "codein":i, "step":step, "nowpoint":nowpoint, "point":point, "output":output})
+                    yieldlist.append({"codeat":n, "codein":i, "step":step, "nowpoint":nowpoint, "point":tuple(point), "output":output})
                     continue
                 elif retmode:
                     continue
