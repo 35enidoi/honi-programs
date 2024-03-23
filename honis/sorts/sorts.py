@@ -21,6 +21,29 @@ def shakersort(target:list):
         # print(" ".join(map(str, target[:i+1])), "|", " ".join(map(str, target[i+1:-i-1])), "|", " ".join(map(str, target[-i-1:])))
     return target
 
+def combsort(target:list):
+    # コムソート
+    h = int(len(target)/1.3)
+    if h < 1:
+        h = 1
+    while True:
+        print(h, target)
+        i = 0
+        swap = False
+        while i + h < len(target):
+            if target[i] > target[i+h]:
+                target[i], target[i+h] = target[i+h], target[i]
+                swap = True
+            # print(" ".join(map(str, target)))
+            # print("  "*i + "^ " + "  "*(h-1) + "^")
+            i += 1
+        if h == 1 and not swap:
+            break
+        h = int(h/1.3)
+        if h < 1:
+            h = 1
+    return target
+
 def insertsort(target:list):
     # 挿入ソート
     returnlist = []
