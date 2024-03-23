@@ -122,3 +122,18 @@ def mergesort(target:list):
     else:
         kirutoko = len(target)//2
         return merge(mergesort(target[:kirutoko]), mergesort(target[kirutoko:]))
+
+
+
+target_list = [3, 1, 2, 1, 6, 0, 3, 9, 8]
+
+def issorted(target:list) -> bool:
+    for i in range(len(target)-1):
+        if target[i] > target[i+1]:
+            return False
+    else:
+        return True
+
+def random_list_gen(num:int, maxnum:int = 9) -> list:
+    import random
+    return [random.randint(0, maxnum) for _ in range(num)]
