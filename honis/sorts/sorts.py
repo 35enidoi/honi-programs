@@ -8,11 +8,18 @@ def bubblesort(target:list):
             # print("  "*(r) + "^ ^")
     return target
 
-# def shakersort(target:list):
-#     # シェーカーソート
-#     midnum = int(len(target)/2)
-#     for i in range(midnum):
-#         for r in range()
+def shakersort(target:list):
+    # シェーカーソート
+    midnum = int(len(target)/2)
+    for i in range(midnum):
+        for r in range(i, len(target)-i-1):
+            if target[r] > target[r+1]:
+                target[r], target[r+1] = target[r+1], target[r]
+        for r in reversed(range(i+1, len(target)-i)):
+            if target[r] < target[r-1]:
+                target[r], target[r-1] = target[r-1], target[r]
+        # print(" ".join(map(str, target[:i+1])), "|", " ".join(map(str, target[i+1:-i-1])), "|", " ".join(map(str, target[-i-1:])))
+    return target
 
 def insertsort(target:list):
     # 挿入ソート
