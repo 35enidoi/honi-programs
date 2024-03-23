@@ -124,8 +124,8 @@ def mergesort(target:list):
         return merge(mergesort(target[:kirutoko]), mergesort(target[kirutoko:]))
 
 
-
-target_list = [3, 1, 2, 1, 6, 0, 3, 9, 8]
+def target_list():
+    return [3, 1, 2, 1, 6, 0, 3, 9, 8]
 
 def issorted(target:list) -> bool:
     for i in range(len(target)-1):
