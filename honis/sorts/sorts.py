@@ -53,6 +53,21 @@ def combsort(target:list):
             h = 1
     return target
 
+def oddevensort(target:list):
+    # 寄偶転置ソート
+    isnotswap = False
+    while not isnotswap:
+        isnotswap = True
+        for i in range(0, len(target)-1, 2):
+            if target[i] > target[i+1]:
+                target[i], target[i+1] = target[i+1], target[i]
+                isnotswap = False
+        for i in range(1, len(target)-1, 2):
+            if target[i] > target[i+1]:
+                target[i], target[i+1] = target[i+1], target[i]
+                isnotswap = False
+    return target
+
 def insertsort(target:list):
     # 挿入ソート
     returnlist = []
