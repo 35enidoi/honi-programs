@@ -1,24 +1,33 @@
 def bubblesort(target:list):
     # バブルソート
     for targetrange in reversed(range(1, len(target))):
+        isnotswap = True
         for r in range(targetrange-1):
             if target[r] > target[r+1]:
                 target[r], target[r+1] = target[r+1], target[r]
+                isnotswap = False
             # print(" ".join(map(str, target)))
             # print("  "*(r) + "^ ^")
+        if isnotswap:
+            break
     return target
 
 def shakersort(target:list):
     # シェーカーソート
     midnum = int(len(target)/2)
     for i in range(midnum):
+        isnotswap = True
         for r in range(i, len(target)-i-1):
             if target[r] > target[r+1]:
                 target[r], target[r+1] = target[r+1], target[r]
+                isnotswap = False
         for r in reversed(range(i+1, len(target)-i)):
             if target[r] < target[r-1]:
                 target[r], target[r-1] = target[r-1], target[r]
+                isnotswap = False
         # print(" ".join(map(str, target[:i+1])), "|", " ".join(map(str, target[i+1:-i-1])), "|", " ".join(map(str, target[-i-1:])))
+        if isnotswap:
+            break
     return target
 
 def combsort(target:list):
