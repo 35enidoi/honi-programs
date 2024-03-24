@@ -36,7 +36,7 @@ def combsort(target:list):
     if h < 1:
         h = 1
     while True:
-        print(h, target)
+        # print(h, target)
         i = 0
         swap = False
         while i + h < len(target):
