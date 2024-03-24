@@ -161,6 +161,7 @@ def stoogesort(target:list):
     return target
 
 def mergesort(target:list):
+    # マージソート
     def merge(rlist:list, llist:list) -> list:
         if rlist == []:
             returnlist = llist
@@ -168,14 +169,17 @@ def mergesort(target:list):
             returnlist = rlist
         else:
             returnlist = []
-            while rlist != [] and llist != []:
-                if rlist[-1] <= llist[-1]:
-                    returnlist.append(llist.pop())
+            rindex = 0
+            lindex = 0
+            while rindex != len(rlist) and lindex != len(llist):
+                if rlist[rindex] >= llist[lindex]:
+                    returnlist.append(llist[lindex])
+                    lindex += 1
                 else:
-                    returnlist.append(rlist.pop())
-            returnlist.extend(rlist)
-            returnlist.extend(llist)
-            returnlist.reverse()
+                    returnlist.append(rlist[rindex])
+                    rindex += 1
+            returnlist.extend(rlist[rindex:])
+            returnlist.extend(llist[lindex:])
         return returnlist
 
     if len(target) <= 1:
