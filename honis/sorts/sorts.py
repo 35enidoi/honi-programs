@@ -2,7 +2,7 @@ def bubblesort(target:list):
     # バブルソート
     for targetrange in reversed(range(1, len(target))):
         isnotswap = True
-        for r in range(targetrange-1):
+        for r in range(targetrange):
             if target[r] > target[r+1]:
                 target[r], target[r+1] = target[r+1], target[r]
                 isnotswap = False
