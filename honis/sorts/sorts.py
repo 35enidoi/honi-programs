@@ -83,6 +83,20 @@ def insertsort(target:list):
                 returnlist.append(i)
     return returnlist
 
+def insertsort_recreate(target:list):
+    # 挿入ソート作り直し
+    for i in range(1, len(target)):
+        val = target[i]
+        changeindex = 0
+        for r in reversed(range(i)):
+            changeindex = r
+            if val >= target[r]:
+                changeindex += 1
+                break
+        target[changeindex+1:i+1] = target[changeindex:i]
+        target[changeindex] = val
+    return target
+
 def insertsort_optimized(target: list): # chatgptに上のやつを改良してもらったやつ
     for i in range(1, len(target)):
         key = target[i]
