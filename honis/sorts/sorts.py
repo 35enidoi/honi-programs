@@ -96,8 +96,8 @@ def quicksort(target:list):
         # print(target[:lindex], target[lindex:])
         return quicksort(target[:lindex]) + quicksort(target[lindex:])
 
-def insertsort(target:list):
-    # 挿入ソート
+def insertsort_slow(target:list):
+    # 挿入ソート（遅いバージョン(古い(遅いよ)))
     returnlist = []
     for i in target:
         if len(returnlist) == 0:
@@ -111,8 +111,8 @@ def insertsort(target:list):
                 returnlist.append(i)
     return returnlist
 
-def insertsort_recreate(target:list):
-    # 挿入ソート作り直し
+def insertsort(target:list):
+    # 挿入ソート
     for i in range(1, len(target)):
         val = target[i]
         changeindex = 0
@@ -125,7 +125,8 @@ def insertsort_recreate(target:list):
         target[changeindex] = val
     return target
 
-def insertsort_optimized(target: list): # chatgptに上のやつを改良してもらったやつ
+def insertsort_optimized(target: list): 
+    # chatgptに上のやつを改良してもらったやつ
     for i in range(1, len(target)):
         key = target[i]
         left = 0
