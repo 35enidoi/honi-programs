@@ -219,6 +219,41 @@ def mergesort(target:list):
         return merge(mergesort(target[:kirutoko]), mergesort(target[kirutoko:]))
 
 
+def bogo_mergesort(target:list):
+    # ボゴ・マージソート
+    def _bogosort(target:list):
+        # ボゴソート
+        import random
+        while True:
+            random.shuffle(target)
+            for i in range(len(target)-1):
+                if target[i] > target[i+1]:
+                    break
+            else:
+                break
+        return target
+
+    def _merge(rlist:list, llist:list) -> list:
+        returnlist = []
+        rindex = 0
+        lindex = 0
+        while rindex != len(rlist) and lindex != len(llist):
+            if rlist[rindex] >= llist[lindex]:
+                returnlist.append(llist[lindex])
+                lindex += 1
+            else:
+                returnlist.append(rlist[rindex])
+                rindex += 1
+        returnlist.extend(rlist[rindex:])
+        returnlist.extend(llist[lindex:])
+        return returnlist
+
+    if len(target) <= 8:
+        return _bogosort(target)
+    else:
+        kirutoko = len(target)//2
+        return _merge(bogo_mergesort(target[:kirutoko]), bogo_mergesort(target[kirutoko:]))
+
 def target_list():
     return [3, 1, 2, 1, 6, 0, 3, 9, 8]
 
