@@ -68,25 +68,33 @@ def combsort(target:list):
             h = 1
     return target
 
-# def quicksort(target:list):
-#     # クイックソート
-#     pipot = target[(len(target)//2)+1]
-#     rindex = len(target)-1
-#     lindex = 0
-#     while rindex != lindex or target[rindex] < target[lindex]:
-#         for r in range(rindex):
-#             if target[rindex-r] >= pipot:
-#                 break
-#             else:
-#                 rindex -= 1
-#         for l in range(lindex):
-#             if target[lindex+l] < pipot:
-#                 break
-#             else:
-#                 lindex += 1
-#         if rindex == lindex:
-#             break
-#         elif target[rindex] > lindex:
+def quicksort(target:list):
+    # クイックソート
+    if len(target) <= 1:
+        return target
+    else:
+        pipot = target[len(target)//2]
+        rindex = len(target)-1
+        lindex = 0
+        # print(target, pipot)
+        while True:
+            while not target[rindex] <= pipot:
+                rindex -= 1
+            # print(target[rindex], rindex)
+            while not target[lindex] >= pipot:
+                lindex += 1
+            # print(target[lindex], lindex)
+            if rindex > lindex:
+                if target[rindex] != target[lindex]:
+                    # print(target[rindex], target[lindex], rindex, lindex)
+                    target[rindex], target[lindex] = target[lindex], target[rindex]
+                    # print(target)
+                rindex -= 1
+                lindex += 1
+            else:
+                break
+        # print(target[:lindex], target[lindex:])
+        return quicksort(target[:lindex]) + quicksort(target[lindex:])
 
 def insertsort(target:list):
     # 挿入ソート
