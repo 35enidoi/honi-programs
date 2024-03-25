@@ -99,7 +99,8 @@ def quicksort(target:list):
 def insertsort_slow(target:list):
     # 挿入ソート（遅いバージョン(古い(遅いよ)))
     returnlist = []
-    for i in target:
+    # print((" ".join(map(str, target))) + "\n")
+    for targetindex, i in enumerate(target):
         if len(returnlist) == 0:
             returnlist.append(i)
         else:
@@ -109,6 +110,8 @@ def insertsort_slow(target:list):
                     break
             else:
                 returnlist.append(i)
+    #     print(" ".join(map(str, returnlist)), "|", " ".join(map(str, target[targetindex:])))
+    # print("\n"+(" ".join(map(str, returnlist))))
     return returnlist
 
 def insertsort(target:list):
@@ -139,7 +142,6 @@ def insertsort_optimized(target: list):
                 right = mid - 1
         target[left+1:i+1] = target[left:i]
         target[left] = key
-        # print(" ".join(map(str, target[:i])), "|", " ".join(map(str, target[i:])))
     return target
 
 def bogosort(target:list):
