@@ -320,6 +320,7 @@ def comb_merge_quicksort(target:list):
                 break
         return comb_merge_quicksort(target[:lindex]) + comb_merge_quicksort(target[lindex:])
 
+
 def target_list():
     return [3, 1, 2, 1, 6, 0, 3, 9, 8]
 
