@@ -68,6 +68,26 @@ def combsort(target:list):
             h = 1
     return target
 
+# def quicksort(target:list):
+#     # クイックソート
+#     pipot = target[(len(target)//2)+1]
+#     rindex = len(target)-1
+#     lindex = 0
+#     while rindex != lindex or target[rindex] < target[lindex]:
+#         for r in range(rindex):
+#             if target[rindex-r] >= pipot:
+#                 break
+#             else:
+#                 rindex -= 1
+#         for l in range(lindex):
+#             if target[lindex+l] < pipot:
+#                 break
+#             else:
+#                 lindex += 1
+#         if rindex == lindex:
+#             break
+#         elif target[rindex] > lindex:
+
 def insertsort(target:list):
     # 挿入ソート
     returnlist = []
