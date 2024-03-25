@@ -174,7 +174,7 @@ def stoogesort(target:list):
     if target[0] > target[-1]:
         target[0], target[-1] = target[-1], target[0]
     if (listrange := len(target)) >= 3:
-        kirutoko = int(((listrange-1)*(2/3))) + (1 if str((listrange-1)*(2/3)).split(".")[1] != 0 else 0) # 切り上げ
+        kirutoko = int((listrange-1)*(2/3)) + (1 if str((listrange-1)*(2/3)).split(".")[1] != 0 else 0) # 切り上げ
         target[:kirutoko] = stoogesort(target[:kirutoko])
         target[-kirutoko:] = stoogesort(target[-kirutoko:])
         target[:kirutoko] = stoogesort(target[:kirutoko])
