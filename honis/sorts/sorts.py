@@ -254,6 +254,72 @@ def bogo_mergesort(target:list):
         kirutoko = len(target)//2
         return _merge(bogo_mergesort(target[:kirutoko]), bogo_mergesort(target[kirutoko:]))
 
+def comb_merge_quicksort(target:list):
+    # コム・マージ・クイックソート
+    def _mergesort(target:list):
+        # マージソート
+        def _merge(rlist:list, llist:list) -> list:
+            returnlist = []
+            rindex = 0
+            lindex = 0
+            while rindex != len(rlist) and lindex != len(llist):
+                if rlist[rindex] >= llist[lindex]:
+                    returnlist.append(llist[lindex])
+                    lindex += 1
+                else:
+                    returnlist.append(rlist[rindex])
+                    rindex += 1
+            returnlist.extend(rlist[rindex:])
+            returnlist.extend(llist[lindex:])
+            return returnlist
+
+        def _combsort(target:list):
+            # コムソート
+            h = int(len(target)/1.3)
+            if h < 1:
+                h = 1
+            while True:
+                i = 0
+                swap = False
+                while i + h < len(target):
+                    if target[i] > target[i+h]:
+                        target[i], target[i+h] = target[i+h], target[i]
+                        swap = True
+                    i += 1
+                if h == 1 and not swap:
+                    break
+                h = int(h/1.3)
+                if h < 1:
+                    h = 1
+            return target
+
+        if len(target) <= 16:
+            return _combsort(target)
+        else:
+            kirutoko = len(target)//2
+            return _merge(_mergesort(target[:kirutoko]), _mergesort(target[kirutoko:]))
+
+    # クイックソート
+    if len(target) <= 256:
+        return _mergesort(target)
+    else:
+        pipot = target[len(target)//2]
+        rindex = len(target)-1
+        lindex = 0
+        while True:
+            while not target[rindex] <= pipot:
+                rindex -= 1
+            while not target[lindex] >= pipot:
+                lindex += 1
+            if rindex > lindex:
+                if target[rindex] != target[lindex]:
+                    target[rindex], target[lindex] = target[lindex], target[rindex]
+                rindex -= 1
+                lindex += 1
+            else:
+                break
+        return comb_merge_quicksort(target[:lindex]) + comb_merge_quicksort(target[lindex:])
+
 def target_list():
     return [3, 1, 2, 1, 6, 0, 3, 9, 8]
 
