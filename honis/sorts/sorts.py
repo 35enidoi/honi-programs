@@ -198,23 +198,18 @@ def stoogesort(target:list):
 def mergesort(target:list):
     # マージソート
     def merge(rlist:list, llist:list) -> list:
-        if rlist == []:
-            returnlist = llist
-        elif llist == []:
-            returnlist = rlist
-        else:
-            returnlist = []
-            rindex = 0
-            lindex = 0
-            while rindex != len(rlist) and lindex != len(llist):
-                if rlist[rindex] >= llist[lindex]:
-                    returnlist.append(llist[lindex])
-                    lindex += 1
-                else:
-                    returnlist.append(rlist[rindex])
-                    rindex += 1
-            returnlist.extend(rlist[rindex:])
-            returnlist.extend(llist[lindex:])
+        returnlist = []
+        rindex = 0
+        lindex = 0
+        while rindex != len(rlist) and lindex != len(llist):
+            if rlist[rindex] >= llist[lindex]:
+                returnlist.append(llist[lindex])
+                lindex += 1
+            else:
+                returnlist.append(rlist[rindex])
+                rindex += 1
+        returnlist.extend(rlist[rindex:])
+        returnlist.extend(llist[lindex:])
         return returnlist
 
     if len(target) <= 1:
