@@ -159,7 +159,8 @@ def gnomesort(target:list):
     # ノームソート
     index = 0
     while index != len(target)-1:
-        # print(index, target)
+        # print("  "+" ".join(map(str, target)))
+        # print(("  "*(index+1))+"^ ^")
         if index == -1:
             index += 1
         elif target[index] <= target[index+1]:
