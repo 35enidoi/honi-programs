@@ -99,15 +99,19 @@ def quicksort(target:list):
 def insertsort(target:list):
     # 挿入ソート
     for i in range(1, len(target)):
+        # print(target[:i], "|", target[i:])
         val = target[i]
         changeindex = 0
         for r in reversed(range(i)):
             changeindex = r
+            # print(" ".join(map(str, target[:i])), "")
+            # print(("  "*r) + "^" + "  "*(i-r), val, ">=", target[r], val >= target[r])
             if val >= target[r]:
                 changeindex += 1
                 break
         target[changeindex+1:i+1] = target[changeindex:i]
         target[changeindex] = val
+    # print(target)
     return target
 
 def insertsort_optimized(target: list): 
