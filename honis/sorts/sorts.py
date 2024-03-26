@@ -96,24 +96,6 @@ def quicksort(target:list):
         # print(target[:lindex], target[lindex:])
         return quicksort(target[:lindex]) + quicksort(target[lindex:])
 
-def insertsort_slow(target:list):
-    # 挿入ソート（遅いバージョン(古い(遅いよ)))
-    returnlist = []
-    # print((" ".join(map(str, target))) + "\n")
-    for targetindex, i in enumerate(target):
-        if len(returnlist) == 0:
-            returnlist.append(i)
-        else:
-            for index, val in enumerate(returnlist):
-                if val > i:
-                    returnlist.insert(index, i)
-                    break
-            else:
-                returnlist.append(i)
-    #     print(" ".join(map(str, returnlist)), "|", " ".join(map(str, target[targetindex:])))
-    # print("\n"+(" ".join(map(str, returnlist))))
-    return returnlist
-
 def insertsort(target:list):
     # 挿入ソート
     for i in range(1, len(target)):
