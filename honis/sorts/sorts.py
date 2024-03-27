@@ -144,15 +144,18 @@ def bogosort(target:list):
 
 def selectionsort(target:list):
     # 選択ソート
-    # print(" ".join(map(str, target)), "\n")
     for i in range(len(target)):
+        # print(target[:i], "|", target[i:])
         min_index = i
-        for index in range(i, len(target)):
+        # print(" ".join(map(str, target[i:])))
+        # print("^ "+ "  "*(len(target)-i), target[min_index])
+        for index in range(i+1, len(target)):
+            # print(" ".join(map(str, target[i:])))
+            # print("  "*(index-i) +"^ " + "  "*(len(target)-index), target[min_index], ">", target[index], target[min_index] > target[index])
             if target[min_index] > target[index]:
                 min_index = index
         target[i], target[min_index] = target[min_index], target[i]
-        # print(" ".join(map(str, target)))
-        # print(("  "*i)+"^")
+    # print(target)
     return target
 
 def gnomesort(target:list):
