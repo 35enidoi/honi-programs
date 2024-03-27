@@ -37,13 +37,13 @@ def sortstress(mn_:int, mx_:int, haba_:int, samplenum:int, targets:list):
         return [random.randint(0, maxnum) for _ in range(num)]
 
     timedict_ = {i.__name__:{} for i in targets}
-    print(f"stress test : min;{mn_} max;{mx_}, haba;{haba_}")
+    print(f"sort test : min;{mn_} max;{mx_}, haba;{haba_}")
     X=[i for i in range(mn_, mx_+1, haba_)]
     print(X)
     for i in targets:
-        print(f"currently running : {i.__name__}")
+        print(f"current running:{i.__name__}")
         for z in X:
-            print(f"start stress : {z}")
+            print(f"start sort values:{z}")
             timedict_[i.__name__][z] = timeit("i(a)", "a=random_list_gen(z, 10000)", number=samplenum, globals=locals())/samplenum
     return X, timedict_
 
@@ -73,5 +73,5 @@ if __name__ == "__main__":
                 (20000, 50000, 5000, 50, order_n__2[3:5] + order_nlogn),# 5
                 (50000, 100000, 10000, 25, order_n__2[4:5] + order_nlogn),# 6
                 )
-    target = profiles[5] # プロファイルをここで選ぶ
+    target = profiles[1] # プロファイルをここで選ぶ
     showplots(*sortstress(*target), target[-1])
