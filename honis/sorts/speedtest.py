@@ -22,9 +22,7 @@ from sorts import (bubblesort,
                    insert_quicksort
                    )
 
-from timeit import timeit
-
-order_n__2 = (bubblesort, shakersort, oddevensort, insertsort, gnomesort, insertsort_optimized, selectionsort)
+order_n__2 = (bubblesort, shakersort, oddevensort, insertsort, insertsort_optimized, gnomesort, selectionsort)
 order_nlogn = (combsort, quicksort, mergesort)
 order_tokusyu = (stoogesort,)
 order_baka = (bogosort, )
@@ -33,6 +31,7 @@ sort_kumiawase = (insert_quicksort, comb_merge_quicksort)
 sort_kumiawase_baka = (bogo_mergesort, )
 
 def sortstress(mn_:int, mx_:int, haba_:int, samplenum:int, targets:list):
+    from timeit import timeit
     def random_list_gen(num:int, maxnum:int = 9) -> list:
         import random
         return [random.randint(0, maxnum) for _ in range(num)]
@@ -60,5 +59,19 @@ def showplots(X_:list, timedict_:dict, sortfunclist_:list):
     plt.show()
 
 if __name__ == "__main__":
-    target = order_nlogn + sort_kumiawase
-    showplots(*sortstress(1000, 10000, 1000, 100, target), target)
+    # プロファイル
+    # 要素数の下限、要素数の上限、増加の大きさ、サンプル数、使う関数の順。
+    # int, int, int, int, tuple[function]
+
+    # ソートできているかは見ないので注意。
+    # 一々やってたら時間かかるし、そもそもtimeitがそういう事後にやるみたいなの対応してない。
+    profiles = ((100, 1000, 100, 1000, order_n__2 + order_nlogn),# 0
+                (100, 1000, 100, 1000, order_n__2[:6] + order_nlogn),# 1
+                (1000, 5000, 500, 300, order_n__2[:6] + order_nlogn),# 2
+                (5000, 10000, 500, 200, order_n__2[:6] + order_nlogn),# 3
+                (10000, 20000, 2000, 100, order_n__2[:5] + order_nlogn),# 4
+                (20000, 50000, 5000, 50, order_n__2[3:5] + order_nlogn),# 5
+                (50000, 100000, 10000, 25, order_n__2[4:5] + order_nlogn),# 6
+                )
+    target = profiles[5] # プロファイルをここで選ぶ
+    showplots(*sortstress(*target), target[-1])
