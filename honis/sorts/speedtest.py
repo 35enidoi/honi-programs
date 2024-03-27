@@ -1,3 +1,10 @@
+"""
+速度検証ファイル
+
+下にあるプロファイルから選んでも良いし、新しくプロファイルを作ってもいい
+
+matplotlibが必要。(Arch linuxは標準で入ってなかった)"""
+
 from sorts import (bubblesort,
                    shakersort,
                    oddevensort,
