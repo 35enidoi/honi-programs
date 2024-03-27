@@ -309,6 +309,48 @@ def comb_merge_quicksort(target:list):
                 break
         return comb_merge_quicksort(target[:lindex]) + comb_merge_quicksort(target[lindex:])
 
+def insert_quicksort(target:list):
+    # 挿入・クイックソート
+    def insertsort_(target:list):
+        # 挿入ソート
+        # print(len(target))
+        for i in range(1, len(target)):
+            val = target[i]
+            changeindex = 0
+            for r in reversed(range(i)):
+                changeindex = r
+                if val >= target[r]:
+                    changeindex += 1
+                    break
+            target[changeindex+1:i+1] = target[changeindex:i]
+            target[changeindex] = val
+        return target
+
+    if len(target) <= 16:
+        return insertsort_(target)
+    else:
+        pipot = target[len(target)//2]
+        rindex = len(target)-1
+        lindex = 0
+        # print(target, pipot)
+        while True:
+            while not target[rindex] <= pipot:
+                rindex -= 1
+            # print(target[rindex], rindex)
+            while not target[lindex] >= pipot:
+                lindex += 1
+            # print(target[lindex], lindex)
+            if rindex > lindex:
+                if target[rindex] != target[lindex]:
+                    # print(target[rindex], target[lindex], rindex, lindex)
+                    target[rindex], target[lindex] = target[lindex], target[rindex]
+                    # print(target)
+                rindex -= 1
+                lindex += 1
+            else:
+                break
+        # print(target[:lindex], target[lindex:])
+        return insert_quicksort(target[:lindex]) + insert_quicksort(target[lindex:])
 
 def target_list():
     return [3, 1, 2, 1, 6, 0, 3, 9, 8]
