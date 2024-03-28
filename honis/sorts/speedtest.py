@@ -44,7 +44,7 @@ def sortstress(mn_:int, mx_:int, haba_:int, samplenum:int, targets:list):
         print(f"current running:{i.__name__}")
         for z in X:
             print(f"start sort values:{z}")
-            timedict_[i.__name__][z] = timeit("i(a)", "a=random_list_gen(z, 10000)", number=samplenum, globals=locals())/samplenum
+            timedict_[i.__name__][z] = timeit("i(a)", "a=random_list_gen(z, 10000000)", number=samplenum, globals=locals())/samplenum
     return X, timedict_
 
 def showplots(X_:list, timedict_:dict, sortfunclist_:list):
