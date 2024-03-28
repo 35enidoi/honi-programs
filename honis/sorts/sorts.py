@@ -352,6 +352,54 @@ def insert_quicksort(target:list):
         # print(target[:lindex], target[lindex:])
         return insert_quicksort(target[:lindex]) + insert_quicksort(target[lindex:])
 
+def stalin_mergesort(target:list):
+    # スターリン・マージソート
+    def _merge(rlist:list, llist:list) -> list:
+        returnlist = []
+        rindex = 0
+        lindex = 0
+        while rindex != len(rlist) and lindex != len(llist):
+            if rlist[rindex] >= llist[lindex]:
+                returnlist.append(llist[lindex])
+                lindex += 1
+            else:
+                returnlist.append(rlist[rindex])
+                rindex += 1
+        returnlist.extend(rlist[rindex:])
+        returnlist.extend(llist[lindex:])
+        # print(returnlist)
+        return returnlist
+
+    if len(target) <= 1:
+        return target
+    else:
+        notsyukusei = [target[0]]
+        siberia = []
+        for i in target[1:]:
+            if i < notsyukusei[-1]:
+                # シベリア送り
+                siberia.append(i)
+            else:
+                # 粛清回避
+                notsyukusei.append(i)
+        # print(notsyukusei, siberia)
+        return _merge(notsyukusei, stalin_mergesort(siberia))
+
+def stalinsort(target:list):
+    if len(target) <= 1:
+        return target
+    else:
+        notsyukusei = [target[0]]
+        siberia = []
+        for i in target[1:]:
+            if i < notsyukusei[-1]:
+                # シベリア送り
+                siberia.append(i)
+            else:
+                # 粛清回避
+                notsyukusei.append(i)
+        return notsyukusei, stalinsort(siberia)
+
 def target_list():
     return [3, 1, 2, 1, 6, 0, 3, 9, 8]
 

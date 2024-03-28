@@ -19,7 +19,8 @@ from sorts import (bubblesort,
                    mergesort,
                    bogo_mergesort,
                    comb_merge_quicksort,
-                   insert_quicksort
+                   insert_quicksort,
+                   stalin_mergesort
                    )
 
 order_n__2 = (bubblesort, shakersort, oddevensort, insertsort, insertsort_optimized, gnomesort, selectionsort)
@@ -29,6 +30,8 @@ order_baka = (bogosort, )
 
 sort_kumiawase = (insert_quicksort, comb_merge_quicksort)
 sort_kumiawase_baka = (bogo_mergesort, )
+
+mitisuu = (stalin_mergesort, )
 
 def sortstress(mn_:int, mx_:int, haba_:int, samplenum:int, targets:list):
     from timeit import timeit
@@ -72,6 +75,8 @@ if __name__ == "__main__":
                 (10000, 20000, 2000, 100, order_n__2[:5] + order_nlogn),# 4
                 (20000, 50000, 5000, 50, order_n__2[3:5] + order_nlogn),# 5
                 (50000, 100000, 10000, 25, order_n__2[4:5] + order_nlogn),# 6
+
+                (100, 1000, 100, 1000, order_n__2 + order_nlogn + mitisuu),# スターリン・マージソートの測定 7
                 )
     target = profiles[1] # プロファイルをここで選ぶ
     showplots(*sortstress(*target), target[-1])
