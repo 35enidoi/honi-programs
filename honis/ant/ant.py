@@ -2,9 +2,6 @@ import random
 
 
 class Ant:
-    #             左        下      右      上
-    DIRECTIONS = ((0, -1), (-1, 0), (0, 1), (1, 0))
-
     def __init__(self, board: list[list[bool]], random_pos: bool = False) -> None:
         r"""
 \ __/
@@ -31,21 +28,28 @@ class Ant:
         # 色変える
         self.board[self.position_y][self.position_x] = not self.board[self.position_y][self.position_x]
 
-        # 場所の増分について取得
-        y_add, x_add = self.DIRECTIONS[self.direction % 4]
-
-        # ぶち込む
-        self.position_y += y_add
-        self.position_x += x_add
-
-        # yについてマスの範囲超えてないか見る
-        if self.position_y == -1:
-            self.position_y = self.board_size[0] - 1
-        elif self.position_y == self.board_size[0]:
-            self.position_y = 0
-
-        # xも同様
-        if self.position_x == -1:
-            self.position_x = self.board_size[1] - 1
-        elif self.position_x == self.board_size[1]:
-            self.position_x = 0
+        # 方向を見て足す
+        if (direction := self.direction % 4) == 0:
+            # 下
+            self.position_y -= 1
+            if self.position_y == -1:
+                # 範囲外出たら逆の場所に戻す
+                self.position_y = self.board_size[0] - 1
+        elif direction == 1:
+            # 左
+            self.position_x -= 1
+            if self.position_x == -1:
+                # 同様
+                self.position_x = self.board_size[1] - 1
+        elif direction == 2:
+            # 上
+            self.position_y += 1
+            if self.position_y == self.board_size[0]:
+                # 同(ry
+                self.position_y = 0
+        elif direction == 3:
+            # 右
+            self.position_x += 1
+            if self.position_x == self.board_size[1]:
+                # (ry
+                self.position_x = 0
