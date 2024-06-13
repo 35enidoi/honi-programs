@@ -13,7 +13,7 @@ def print_board(board_: list[list[int]]):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="ラグラトンのアリ実行するやつ\n止め方はキーボードによる介入")
+    parser = argparse.ArgumentParser(description="ラングトンのアリ実行するやつ\n止め方はキーボードによる介入")
 
     parser.add_argument("-H", help="マスの高さ デフォルト25", default=25, type=int)
     parser.add_argument("-W", help="マスの幅 デフォルト25", default=25, type=int)
