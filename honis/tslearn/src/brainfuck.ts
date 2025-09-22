@@ -1,3 +1,9 @@
+import {
+    InputBufferEmptyError, NoMatchingCloseBracketError,
+    NoMatchingOpenBracketError, MemoryPointerOutOfBoundsError
+} from "./errors.js";
+
+
 export class BrainFuck {
     private inputBuffer: string = "";
     private code: string;
@@ -13,14 +19,14 @@ export class BrainFuck {
 
     private cursorPosIncrement(): void {
         if (this.memoryPointer >= this.memory.length - 1) {
-            throw new Error("Memory pointer out of bounds.");
+            throw new MemoryPointerOutOfBoundsError();
         }
         this.memoryPointer++;
     }
 
     private cursorPosDecrement(): void {
         if (this.memoryPointer <= 0) {
-            throw new Error("Memory pointer out of bounds.");
+            throw new MemoryPointerOutOfBoundsError();
         }
         this.memoryPointer--;
     }
@@ -48,7 +54,7 @@ export class BrainFuck {
                 this.codePointer++;
 
                 if (this.codePointer >= this.code.length) {
-                    throw new Error("No matching ']' found.");
+                    throw new NoMatchingCloseBracketError();
                 }
 
                 switch (this.code[this.codePointer]) {
@@ -69,7 +75,7 @@ export class BrainFuck {
     private loopEnd(): void {
         // ']' に対応する '[' がスタックに無い場合は不正
         if (this.loopStack.length === 0) {
-            throw new Error("No matching '[' found.");
+            throw new NoMatchingOpenBracketError();
         }
 
         if (this.memory[this.memoryPointer] !== 0) {
@@ -92,7 +98,7 @@ export class BrainFuck {
             this.inputBuffer = this.inputBuffer.slice(1);
         } else {
             // TODO 例外用クラスの作成
-            throw new Error("Input buffer is empty.");
+            throw new InputBufferEmptyError();
         }
     }
 

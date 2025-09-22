@@ -1,5 +1,8 @@
-import { BrainFuck } from "./brainfuck.js";
 import { readFile } from "node:fs/promises";
+
+import { BrainFuckError } from "./errors.js";
+import { BrainFuck } from "./brainfuck.js";
+
 
 // BrainFuck インタプリタのCLIエントリ
 // 使い方:
@@ -117,7 +120,11 @@ async function main() {
 
 // 例外はここで拾って非ゼロ終了
 main().catch((err) => {
-	console.error(err);
+	if (err instanceof BrainFuckError) {
+		console.error(`BrainFuckError: ${err.message}`);
+	} else {
+		console.error(`Unknown error: ${err}`);
+	}
 	process.exit(1);
 });
 
