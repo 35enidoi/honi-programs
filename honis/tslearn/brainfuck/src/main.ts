@@ -114,8 +114,8 @@ async function main() {
     }
 
 	// インタプリタを実行
-	const bf = new BrainFuck(code);
-	bf.interpret(input);
+	const bf = new BrainFuck({ code });
+	bf.interpret({ input });
 }
 
 // 例外はここで拾って非ゼロ終了

@@ -1,7 +1,9 @@
 import {
-    InputBufferEmptyError, NoMatchingCloseBracketError,
-    NoMatchingOpenBracketError, MemoryPointerOutOfBoundsError
+    MemoryPointerOutOfBoundsError, InputBufferEmptyError, MaxStepExceededError,
+    NoMatchingCloseBracketError, NoMatchingOpenBracketError
 } from "./errors.js";
+
+import { type BrainFuckOptions, type BrainFuckInterpretOptions } from "./types.js";
 
 
 export class BrainFuck {
@@ -11,10 +13,12 @@ export class BrainFuck {
     private memoryPointer: number = 0;
     private codePointer: number = 0;
     private loopStack: number[] = [];
+    private stdout_function: (char: string) => void;
 
-    constructor(code: string, memorySize: number = 30000) {
+    constructor({code, memorySize = 30000, stdout_function = (char) => { process.stdout.write(char); }}: BrainFuckOptions) {
         this.code = code;
         this.memory = new Array(memorySize).fill(0);
+        this.stdout_function = stdout_function;
     }
 
     private cursorPosIncrement(): void {
@@ -89,7 +93,7 @@ export class BrainFuck {
 
     private output(): void {
         const char = String.fromCharCode(this.memory[this.memoryPointer]!);
-        process.stdout.write(char);
+        this.stdout_function(char);
     }
 
     private input(): void {
@@ -102,10 +106,15 @@ export class BrainFuck {
         }
     }
 
-    public interpret(input: string): void {
+    public interpret({ input, maxSteps } : BrainFuckInterpretOptions): void {
         this.inputBuffer = input;
-    
+        let steps = 0;
+
         while (this.codePointer < this.code.length) {
+            if (maxSteps !== undefined && steps >= maxSteps) {
+                throw new MaxStepExceededError();
+            }
+
             switch (this.code[this.codePointer]) {
                 case ">":
                     this.cursorPosIncrement();
@@ -133,6 +142,7 @@ export class BrainFuck {
                     break;
             }
             this.codePointer++;
+            steps++;
         }
     }
 }

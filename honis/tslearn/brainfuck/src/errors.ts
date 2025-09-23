@@ -32,3 +32,10 @@ export class InputBufferEmptyError extends BrainFuckError {
         this.name = "InputBufferEmptyError";
     }
 }
+
+export class MaxStepExceededError extends BrainFuckError {
+    constructor() {
+        super("Maximum execution steps exceeded.");
+        this.name = "MaxStepExceededError";
+    }
+}
