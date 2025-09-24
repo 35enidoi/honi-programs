@@ -1,7 +1,7 @@
 import express, { type Request, type Response } from 'express';
 import { z, ZodError } from 'zod';
 
-import { BrainfuckRequestSchema } from './enum.js';
+import { BrainfuckRequestSchema } from './types.js';
 import { BrainFuck } from './brainfuck.js';
 import { BrainFuckError } from './errors.js';
 
