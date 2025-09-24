@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 
-import { BrainFuckError } from "./errors.js";
-import { BrainFuck } from "./brainfuck.js";
+import { BrainFuckError } from "../core/errors.js";
+import { BrainFuck } from "../core/brainfuck.js";
 
 
 // BrainFuck インタプリタのCLIエントリ

@@ -1,9 +1,9 @@
 import express, { type Request, type Response } from 'express';
 import { z, ZodError } from 'zod';
 
-import { BrainfuckRequestSchema } from './types.js';
-import { BrainFuck } from './brainfuck.js';
-import { BrainFuckError } from './errors.js';
+import { BrainfuckRequestSchema } from '../core/types.js';
+import { BrainFuck } from '../core/brainfuck.js';
+import { BrainFuckError } from '../core/errors.js';
 
 
 const app = express();
